@@ -1,0 +1,10 @@
+server:
+  port: 8920
+
+spring:
+  application:
+    name: contentcenter
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
