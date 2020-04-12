@@ -7,11 +7,12 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 /**
  * 用户中心Application类
+ *
  * @author liaodewen
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients("com.dw.gfs.common.feign")
+@EnableFeignClients
 public class UsercenterApplication {
 
     public static void main(String[] args) {

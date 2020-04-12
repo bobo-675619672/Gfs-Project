@@ -1,26 +1,20 @@
-package com.dw.gfs.common.entity.dto;
+package com.dw.gfs.usercenter.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * 内容封装实体
- * @author liaodewen
- */
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ContentDto {
+public class TaskDto {
 
     private Long id;
 
     private String name;
 
-    private String userName;
-
-    private Long userId;
+    private String remark;
 
 }

@@ -7,4 +7,17 @@ spring:
   cloud:
     nacos:
       discovery:
+        # 指定nacos地址
         server-addr: localhost:8848
+        # 集群
+        cluster-name: gfs
+feign:
+  sentinel:
+    # 开启熔断
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -6,12 +6,14 @@ import java.util.Date;
 
 /**
  * 时间处理类
+ *
  * @author liaodewen
  */
-public class DateUtils {
+public class DateUtil {
 
     /**
      * 获取当前时间
+     *
      * @return 当前时间
      */
     public static Date getNow() {

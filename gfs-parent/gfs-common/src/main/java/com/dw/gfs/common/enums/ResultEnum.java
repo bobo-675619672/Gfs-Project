@@ -4,17 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * 请求返回枚举类
- *
+ * 结果枚举类
  * @author liaodewen
  */
 
 @Getter
 @AllArgsConstructor
-public enum HttpEnum {
+public enum ResultEnum {
 
-    OK(200, "成功"),
-    FAIL(999, "失败");
+    // token: 1xxxx
+    TOKEN_EMPTY(10001, "Token为空"),
+    TOKEN_INVALID(10002, "Token失效"),
+    TOKEN_ERROR(10003, "Token解析错误");
 
     private int code;
     private String msg;

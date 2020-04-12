@@ -19,3 +19,9 @@ spring:
 logging:
   level:
     org.springframework.cloud.gateway: debug
+
+gfs:
+  # 访问白名单
+  white-list:
+    - /token/*
+    - /user/login

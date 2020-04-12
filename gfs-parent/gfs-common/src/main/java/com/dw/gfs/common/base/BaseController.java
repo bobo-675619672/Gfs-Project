@@ -5,6 +5,7 @@ import com.dw.gfs.common.enums.HttpEnum;
 
 /**
  * 基础控制类
+ *
  * @author liaodewen
  */
 public class BaseController {
@@ -16,7 +17,7 @@ public class BaseController {
                 .build();
     }
 
-    public <T>ResultData<T> success(T data) {
+    public <T> ResultData<T> success(T data) {
         return ResultData.<T>builder()
                 .code(HttpEnum.OK.getCode())
                 .msg(HttpEnum.OK.getMsg())

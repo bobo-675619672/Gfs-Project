@@ -1,21 +1,17 @@
-package com.dw.gfs.contentcenter;
+package com.dw.gfs.taskcenter;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
-/**
- * 内容中心Application类
- *
- * @author liaodewen
- */
 @SpringBootApplication
 @EnableDiscoveryClient
-public class ContencenterApplication {
+@EnableFeignClients
+public class TaskcenterApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ContencenterApplication.class, args);
+        SpringApplication.run(TaskcenterApplication.class, args);
     }
 
 }
