@@ -1,18 +1,14 @@
-package com.dw.gfs.common.feign;
+package com.dw.gfs.usercenter.feign.client;
 
 import com.dw.gfs.common.entity.ResultData;
 import com.dw.gfs.common.entity.dto.ContentDto;
-import com.dw.gfs.common.feign.fallback.ContentcenterFeignFallbackFactory;
+import com.dw.gfs.usercenter.feign.fallback.ContentcenterFeignClientFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-/**
- * 内容中心Feign
- * @author liaodewen
- */
-@FeignClient(name = "contentcenter", fallbackFactory = ContentcenterFeignFallbackFactory.class)
-public interface ContentcenterFeign {
+@FeignClient(name = "contentcenter", fallbackFactory = ContentcenterFeignClientFallbackFactory.class)
+public interface ContentCenterFeignClient {
 
     /**
      * 根据id查询内容
