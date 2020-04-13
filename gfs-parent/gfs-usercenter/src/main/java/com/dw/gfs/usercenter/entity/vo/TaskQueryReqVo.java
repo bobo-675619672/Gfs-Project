@@ -1,4 +1,4 @@
-package com.dw.gfs.usercenter.entity.dto;
+package com.dw.gfs.usercenter.entity.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginReponseVo {
+public class TaskQueryReqVo {
 
-    private String token;
+    private Long userId;
 
-    private String remark;
+    private String taskName;
 
 }

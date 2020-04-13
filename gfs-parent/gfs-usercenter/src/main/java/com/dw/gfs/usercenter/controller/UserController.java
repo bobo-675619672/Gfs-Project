@@ -2,18 +2,19 @@ package com.dw.gfs.usercenter.controller;
 
 import com.dw.gfs.common.base.BaseController;
 import com.dw.gfs.common.entity.ResultData;
+import com.dw.gfs.common.utils.TokenUtil;
 import com.dw.gfs.usercenter.entity.dto.ContentDto;
 import com.dw.gfs.usercenter.entity.dto.TaskDto;
 import com.dw.gfs.usercenter.entity.dto.UserDto;
+import com.dw.gfs.usercenter.entity.vo.TaskQueryReqVo;
 import com.dw.gfs.usercenter.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController extends BaseController {
@@ -31,10 +32,15 @@ public class UserController extends BaseController {
         return success(userService.contents(userId));
     }
 
-    @GetMapping("/myTask/{userId}")
-    public ResultData<List<TaskDto>> myTask(@PathVariable("userId") Long userId) {
-        return success(userService.myTask(userId));
+    @GetMapping("/myTask")
+    public ResultData<List<TaskDto>> myTask(@RequestHeader("token") String token) {
+        log.info("token:{}, userId:{}", token);
+        return success(userService.myTask());
     }
 
+    @PostMapping("/task/list")
+    public ResultData<List<TaskDto>> taskList(@RequestBody TaskQueryReqVo reqVo) {
+        return success(userService.taskList(reqVo));
+    }
 
 }

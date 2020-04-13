@@ -11,10 +11,17 @@ spring:
         server-addr: localhost:8848
         # 集群
         cluster-name: gfs
+
 feign:
   sentinel:
     # 开启熔断
     enabled: true
+
+ribbon:
+  eager-load:
+    enabled: true
+    # 为哪些客户端开启饥饿加载，多个客户端使用逗号分隔（非必须）
+    clients: usercenter, taskcenter, contentcenter
 
 management:
   endpoints:

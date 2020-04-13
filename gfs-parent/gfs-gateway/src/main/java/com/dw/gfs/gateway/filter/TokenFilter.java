@@ -1,5 +1,9 @@
 package com.dw.gfs.gateway.filter;
 
+import com.dw.gfs.common.entity.TokenBean;
+import com.dw.gfs.common.enums.ResultEnum;
+import com.dw.gfs.common.exception.GfsRuntimeException;
+import com.dw.gfs.common.utils.StringUtil;
 import com.dw.gfs.common.utils.TokenUtil;
 import com.dw.gfs.gateway.config.PathConfig;
 import com.dw.gfs.gateway.constant.Constant;
@@ -23,20 +27,34 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 鉴权过滤器
+ * Token过滤器
  * @author liaodewen
  */
 @Slf4j
 @Component
-public class AuthFilter implements GlobalFilter, Ordered {
+public class TokenFilter implements GlobalFilter, Ordered {
 
     @Autowired
     private PathConfig pathConfig;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        // 校验用户权限,暂时不做
         log.info("请求经过TokenFilter!");
+        ServerHttpRequest request = exchange.getRequest();
+        List<String> whiteList = pathConfig.getWhiteList();
+        String path = request.getPath().value();
+        // 不在白名单列表
+        if (!whiteList.contains(path)) {
+            String token = request.getHeaders().getFirst(TokenUtil.TOKEN_NAME);
+            log.info("Token:{}", token);
+            TokenBean tokenBean = TokenUtil.getTokenBean(token);
+            // token验证
+            log.info("TokenBean:{}", tokenBean);
+        }
+        // 在白名单列表
+        else {
+            log.info("Path:{} 允许匿名访问!", request.getPath().value());
+        }
         return chain.filter(exchange);
     }
 
@@ -46,7 +64,7 @@ public class AuthFilter implements GlobalFilter, Ordered {
      */
     @Override
     public int getOrder() {
-        return Constant.AUTH_FILTER_ORDER;
+        return Constant.TOKEN_FILTER_ORDER;
     }
 
 }

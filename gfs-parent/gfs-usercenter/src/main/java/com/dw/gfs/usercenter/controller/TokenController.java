@@ -2,7 +2,7 @@ package com.dw.gfs.usercenter.controller;
 
 import com.dw.gfs.common.base.BaseController;
 import com.dw.gfs.common.entity.ResultData;
-import com.dw.gfs.usercenter.entity.dto.LoginRequestVo;
+import com.dw.gfs.usercenter.entity.vo.LoginRequestVo;
 import com.dw.gfs.usercenter.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +26,5 @@ public class TokenController extends BaseController {
     public ResultData login(@RequestBody LoginRequestVo vo) {
         return  success(tokenService.login(vo));
     }
-
 
 }

@@ -3,6 +3,7 @@ package com.dw.gfs.usercenter.service;
 import com.dw.gfs.usercenter.entity.dto.ContentDto;
 import com.dw.gfs.usercenter.entity.dto.TaskDto;
 import com.dw.gfs.usercenter.entity.dto.UserDto;
+import com.dw.gfs.usercenter.entity.vo.TaskQueryReqVo;
 
 import java.util.List;
 
@@ -17,5 +18,7 @@ public interface UserService {
 
     List<ContentDto> contents(Long userId);
 
-    List<TaskDto> myTask(Long userId);
+    List<TaskDto> myTask();
+
+    List<TaskDto> taskList(TaskQueryReqVo reqVo);
 }

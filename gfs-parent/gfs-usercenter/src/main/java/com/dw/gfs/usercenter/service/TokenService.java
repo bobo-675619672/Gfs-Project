@@ -1,8 +1,7 @@
 package com.dw.gfs.usercenter.service;
 
-import com.dw.gfs.usercenter.entity.dto.*;
-
-import java.util.List;
+import com.dw.gfs.usercenter.entity.vo.LoginReponseVo;
+import com.dw.gfs.usercenter.entity.vo.LoginRequestVo;
 
 /**
  * Token接口类
