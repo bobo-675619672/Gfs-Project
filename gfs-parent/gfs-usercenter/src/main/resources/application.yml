@@ -23,6 +23,12 @@ ribbon:
     # 为哪些客户端开启饥饿加载，多个客户端使用逗号分隔（非必须）
     clients: usercenter, taskcenter, contentcenter
 
+rocketmq:
+  name-server: localhost:9876
+  producer:
+    # 小坑：必须指定group
+    group: test-group
+
 management:
   endpoints:
     web:

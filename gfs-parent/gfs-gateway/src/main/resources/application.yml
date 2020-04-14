@@ -23,6 +23,9 @@ logging:
 gfs:
   path:
     # 访问白名单
-    whiteList:
-      - /usercenter/token/login
-      - /common
+    white:
+      usercenter:
+        - /token/**
+        - /msg/**
+      contentcenter:
+        - /query/**

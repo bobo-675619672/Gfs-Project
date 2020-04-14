@@ -1,30 +1,25 @@
 package com.dw.gfs.gateway.filter;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.dw.gfs.common.entity.TokenBean;
-import com.dw.gfs.common.enums.ResultEnum;
-import com.dw.gfs.common.exception.GfsRuntimeException;
-import com.dw.gfs.common.utils.StringUtil;
 import com.dw.gfs.common.utils.TokenUtil;
-import com.dw.gfs.gateway.config.PathConfig;
+import com.dw.gfs.gateway.config.WhitePathConfig;
 import com.dw.gfs.gateway.constant.Constant;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
-import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Token过滤器
@@ -35,16 +30,16 @@ import java.util.Map;
 public class TokenFilter implements GlobalFilter, Ordered {
 
     @Autowired
-    private PathConfig pathConfig;
+    private WhitePathConfig whitePathConfig;
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         log.info("请求经过TokenFilter!");
         ServerHttpRequest request = exchange.getRequest();
-        List<String> whiteList = pathConfig.getWhiteList();
         String path = request.getPath().value();
         // 不在白名单列表
-        if (!whiteList.contains(path)) {
+        if (!isWhitePath(path)) {
+            log.info("Path:{} 需要校验Token!", path);
             String token = request.getHeaders().getFirst(TokenUtil.TOKEN_NAME);
             log.info("Token:{}", token);
             TokenBean tokenBean = TokenUtil.getTokenBean(token);
@@ -53,9 +48,27 @@ public class TokenFilter implements GlobalFilter, Ordered {
         }
         // 在白名单列表
         else {
-            log.info("Path:{} 允许匿名访问!", request.getPath().value());
+            log.info("Path:{} 允许匿名访问!", path);
         }
         return chain.filter(exchange);
+    }
+
+    private boolean isWhitePath(String path) {
+        // path格式: /{微服务名}/{地址}
+        try {
+            List<String> whiteList = whitePathConfig.getWhiteList();
+            for (String uri : whiteList) {
+                if ((uri.endsWith("**")) && (path.indexOf(uri.substring(0, uri.lastIndexOf("**"))) == 0)) {
+                    return true;
+                }
+                if (uri.equals(path)) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            log.info("白名单处理异常!", e);
+        }
+        return false;
     }
 
     /**

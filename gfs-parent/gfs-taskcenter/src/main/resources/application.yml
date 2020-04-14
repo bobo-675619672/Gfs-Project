@@ -16,6 +16,9 @@ feign:
     # 开启熔断
     enabled: true
 
+rocketmq:
+  name-server: localhost:9876
+
 management:
   endpoints:
     web:
