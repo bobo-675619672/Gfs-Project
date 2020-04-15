@@ -23,6 +23,11 @@ ribbon:
     # 为哪些客户端开启饥饿加载，多个客户端使用逗号分隔（非必须）
     clients: usercenter, taskcenter, contentcenter
 
+# feign和ribbon结合，指定策略。feign默认的是轮询的策略，这里的配置可以自定义
+taskcenter:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.dw.gfs.usercenter.feign.rule.MyRule
+
 rocketmq:
   name-server: localhost:9876
   producer:
