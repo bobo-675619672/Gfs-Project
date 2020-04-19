@@ -1,5 +1,8 @@
 package com.dw.gfs.usercenter.feign.fallback;
 
+import com.dw.gfs.common.enums.HttpEnum;
+import com.dw.gfs.common.enums.ResultEnum;
+import com.dw.gfs.common.exception.GfsRuntimeException;
 import com.dw.gfs.usercenter.entity.dto.TaskDto;
 import com.dw.gfs.usercenter.entity.vo.TaskQueryReqVo;
 import com.dw.gfs.usercenter.feign.client.ContentCenterFeignClient;
@@ -23,17 +26,19 @@ public class TaskcenterFeignClientFallbackFactory implements FallbackFactory<Tas
     public TaskCenterFeignClient create(Throwable throwable) {
         log.warn("作业中心熔断了...");
 
-        return new TaskCenterFeignClient() {
-            @Override
-            public List<TaskDto> myTask() {
-                return Lists.newArrayList();
-            }
+        throw new GfsRuntimeException(ResultEnum.TOKEN_EMPTY);
 
-            @Override
-            public List<TaskDto> list(TaskQueryReqVo reqVo) {
-                return Lists.newArrayList();
-            }
-        };
+//        return new TaskCenterFeignClient() {
+//            @Override
+//            public List<TaskDto> myTask() {
+//                return Lists.newArrayList();
+//            }
+//
+//            @Override
+//            public List<TaskDto> list(TaskQueryReqVo reqVo) {
+//                return Lists.newArrayList();
+//            }
+//        };
     }
 
 }

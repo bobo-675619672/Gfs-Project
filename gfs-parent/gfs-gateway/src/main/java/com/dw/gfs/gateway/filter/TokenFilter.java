@@ -1,8 +1,6 @@
 package com.dw.gfs.gateway.filter;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.dw.gfs.common.entity.TokenBean;
 import com.dw.gfs.common.utils.TokenUtil;
 import com.dw.gfs.gateway.config.WhitePathConfig;
@@ -17,9 +15,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Token过滤器
@@ -31,6 +28,9 @@ public class TokenFilter implements GlobalFilter, Ordered {
 
     @Autowired
     private WhitePathConfig whitePathConfig;
+
+    // path格式: /{微服务名}/{地址}
+    private static final String PATH_PATTERN = "\\/(\\w*)(\\/.*)?";
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
@@ -55,18 +55,27 @@ public class TokenFilter implements GlobalFilter, Ordered {
 
     private boolean isWhitePath(String path) {
         // path格式: /{微服务名}/{地址}
-        try {
-            List<String> whiteList = whitePathConfig.getWhiteList();
-            for (String uri : whiteList) {
-                if ((uri.endsWith("**")) && (path.indexOf(uri.substring(0, uri.lastIndexOf("**"))) == 0)) {
-                    return true;
+        Pattern p = Pattern.compile(PATH_PATTERN);
+        Matcher m = p.matcher(path);
+        if (m.find()) {
+            String appName = m.group(1);
+            String realPath = m.group(2);
+            try {
+                JSONArray whiteList = whitePathConfig.getWhiteList().getJSONArray(appName);
+                if (!whiteList.isEmpty()) {
+                    for (int i = 0; i < whiteList.size(); i++) {
+                        String uri = whiteList.getString(i);
+                        if ((uri.endsWith("**")) && (realPath.indexOf(uri.substring(0, uri.lastIndexOf("**"))) == 0)) {
+                            return true;
+                        }
+                        if (uri.equals(realPath)) {
+                            return true;
+                        }
+                    }
                 }
-                if (uri.equals(path)) {
-                    return true;
-                }
+            } catch (Exception e) {
+                log.info("白名单处理异常!", e);
             }
-        } catch (Exception e) {
-            log.info("白名单处理异常!", e);
         }
         return false;
     }

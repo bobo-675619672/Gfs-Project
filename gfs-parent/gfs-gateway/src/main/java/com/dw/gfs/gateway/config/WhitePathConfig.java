@@ -1,5 +1,6 @@
 package com.dw.gfs.gateway.config;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -23,11 +23,11 @@ public class WhitePathConfig {
 
     List<String> taskcenter = Lists.newArrayList();
 
-    public List<String> getWhiteList() {
-        List<String> reuslt = Lists.newArrayList();
-        reuslt.addAll(usercenter.stream().map(i -> i = "/usercenter" + i).collect(Collectors.toList()));
-        reuslt.addAll(contentcenter.stream().map(i -> i = "/contentcenter" + i).collect(Collectors.toList()));
-        reuslt.addAll(taskcenter.stream().map(i -> i = "/taskcenter" + i).collect(Collectors.toList()));
+    public JSONObject getWhiteList() {
+        JSONObject reuslt = new JSONObject();
+        reuslt.put("usercenter", usercenter);
+        reuslt.put("contentcenter", contentcenter);
+        reuslt.put("taskcenter", taskcenter);
         return reuslt;
     }
 

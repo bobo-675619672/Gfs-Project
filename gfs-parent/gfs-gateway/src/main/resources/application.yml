@@ -14,6 +14,10 @@ spring:
         locator:
           # 让gateway通过服务发现组件找到其他的微服务
           enabled: true
+    sentinel:
+      transport:
+        dashboard: localhost:8879
+      eager: true
 
 # 配置日志级别，方别调试
 logging:
@@ -27,5 +31,6 @@ gfs:
       usercenter:
         - /token/**
         - /msg/**
+        - /s/**
       contentcenter:
         - /query/**

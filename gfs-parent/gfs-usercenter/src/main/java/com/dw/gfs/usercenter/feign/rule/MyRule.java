@@ -21,8 +21,12 @@ public class MyRule extends AbstractLoadBalancerRule {
         log.info("这里自定义负载均衡规则!");
         ILoadBalancer lb = this.getLoadBalancer();
         List<Server> allList = lb.getAllServers();
-        log.info("有 {} 个服务器选择!现在返回第1个", allList.size());
+        if (0 == allList.size()) {
+            return null;
+        } else {
+            log.info("有 {} 个服务器选择!现在返回第1个", allList.size());
+            return allList.get(0);
+        }
 
-        return allList.get(0);
     }
 }

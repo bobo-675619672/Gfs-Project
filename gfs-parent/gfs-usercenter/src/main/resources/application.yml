@@ -11,11 +11,27 @@ spring:
         server-addr: localhost:8848
         # 集群
         cluster-name: gfs
+    sentinel:
+      transport:
+        # 指定sentinel控制台地址
+        dashboard: localhost:8879
 
 feign:
   sentinel:
     # 开启熔断
     enabled: true
+  client:
+    config:
+      # 全局配置
+      default:
+        loggerLevel: full
+  httpclient:
+    enabled: true
+    # feign最大连接数
+    max-connections: 200
+    # feign单个路由最大连接数
+    max-connections-per-route: 50
+
 
 ribbon:
   eager-load:
