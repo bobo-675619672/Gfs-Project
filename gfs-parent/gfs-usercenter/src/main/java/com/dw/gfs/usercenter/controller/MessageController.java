@@ -4,6 +4,8 @@ import com.dw.gfs.common.base.BaseController;
 import com.dw.gfs.common.entity.MessageData;
 import com.dw.gfs.common.entity.ResultData;
 import com.dw.gfs.common.utils.DateUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
+@Api(tags = "RocketMQ测试控制类")
 @RestController
 @AllArgsConstructor
 @RequestMapping("/msg")
@@ -26,6 +29,7 @@ public class MessageController extends BaseController {
      * @param msg 消息
      * @return 发送结果
      */
+    @ApiOperation("发送消息")
     @GetMapping("/send/{msg}")
     public ResultData<String> send(@PathVariable("msg") String msg) {
         String topic = "test-group";

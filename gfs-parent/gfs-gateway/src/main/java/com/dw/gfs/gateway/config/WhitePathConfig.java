@@ -23,12 +23,14 @@ public class WhitePathConfig {
 
     List<String> taskcenter = Lists.newArrayList();
 
+    List<String> defaults = Lists.newArrayList();
+
     public JSONObject getWhiteList() {
-        JSONObject reuslt = new JSONObject();
-        reuslt.put("usercenter", usercenter);
-        reuslt.put("contentcenter", contentcenter);
-        reuslt.put("taskcenter", taskcenter);
-        return reuslt;
+        JSONObject result = new JSONObject();
+        result.put("usercenter", usercenter);
+        result.put("contentcenter", contentcenter);
+        result.put("taskcenter", taskcenter);
+        return result;
     }
 
 }

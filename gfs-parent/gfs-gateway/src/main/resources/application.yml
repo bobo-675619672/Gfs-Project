@@ -10,6 +10,25 @@ spring:
         server-addr: localhost:8848
     # 路由网关配置
     gateway:
+      locator:
+        enabled: true
+      routes:
+        - id: usercenter
+          uri: lb://usercenter
+          predicates:
+            - Path=/usercenter/**
+          filters:
+            - SwaggerHeaderFilter
+#            - StripPrefix=1
+        - id: taskcenter
+          uri: lb://taskcenter
+          predicates:
+            - Path=/taskcenter/**
+          filters:
+            - SwaggerHeaderFilter
+#            - StripPrefix=1
+      x-forwarded:
+        enabled: false
       discovery:
         locator:
           # 让gateway通过服务发现组件找到其他的微服务
@@ -19,10 +38,11 @@ spring:
         dashboard: localhost:8879
       eager: true
 
-# 配置日志级别，方别调试
-logging:
-  level:
-    org.springframework.cloud.gateway: debug
+
+# 配置日志级别，方便调试
+#logging:
+#  level:
+#    org.springframework.cloud.gateway: debug
 
 gfs:
   path:
@@ -34,3 +54,9 @@ gfs:
         - /s/**
       contentcenter:
         - /query/**
+      defaults:
+        - /v2/api-docs
+
+# API文档开关
+swagger2:
+  enable: true

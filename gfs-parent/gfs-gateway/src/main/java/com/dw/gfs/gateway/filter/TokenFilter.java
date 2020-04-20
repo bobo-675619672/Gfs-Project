@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -60,6 +61,9 @@ public class TokenFilter implements GlobalFilter, Ordered {
         if (m.find()) {
             String appName = m.group(1);
             String realPath = m.group(2);
+            if (isDefault(realPath)) {
+                return true;
+            }
             try {
                 JSONArray whiteList = whitePathConfig.getWhiteList().getJSONArray(appName);
                 if (!whiteList.isEmpty()) {
@@ -75,6 +79,19 @@ public class TokenFilter implements GlobalFilter, Ordered {
                 }
             } catch (Exception e) {
                 log.info("白名单处理异常!", e);
+            }
+        }
+        return false;
+    }
+
+    private boolean isDefault(String path) {
+        List<String> defaults = whitePathConfig.getDefaults();
+        for (String temp : defaults) {
+            if ((temp.endsWith("**")) && (path.indexOf(temp.substring(0, temp.lastIndexOf("**"))) == 0)) {
+                return true;
+            }
+            if (temp.equals(path)) {
+                return true;
             }
         }
         return false;

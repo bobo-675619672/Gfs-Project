@@ -84,13 +84,13 @@ public class JsonExceptionHandler implements ErrorWebExceptionHandler {
             body = responseStatusException.getMessage();
         } else {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            body = "Internal Server Error";
+            body = "Internal Server Error:" + ex.getMessage();
         }
         //封装响应体,此body可修改为自己的jsonBody
         Map<String, Object> result = new HashMap<>(2, 1);
         result.put("httpStatus", httpStatus);
 
-        String msg = "{\"code\":" + httpStatus + ",\"message\": \"" + body + "\"}";
+        String msg = "{\"code\":\"" + httpStatus + "\",\"message\": \"" + body + "\"}";
         result.put("body", msg);
         //错误记录
         ServerHttpRequest request = exchange.getRequest();
@@ -105,7 +105,6 @@ public class JsonExceptionHandler implements ErrorWebExceptionHandler {
                 .switchIfEmpty(Mono.error(ex))
                 .flatMap((handler) -> handler.handle(newRequest))
                 .flatMap((response) -> write(exchange, response));
-
     }
 
     /**
@@ -113,8 +112,10 @@ public class JsonExceptionHandler implements ErrorWebExceptionHandler {
      */
     protected Mono<ServerResponse> renderErrorResponse(ServerRequest request) {
         Map<String, Object> result = exceptionHandlerResult.get();
-        return ServerResponse.status((HttpStatus) result.get("httpStatus"))
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
+        return ServerResponse
+                .status((HttpStatus) result.get("httpStatus"))
+//                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromObject(result.get("body")));
     }
 

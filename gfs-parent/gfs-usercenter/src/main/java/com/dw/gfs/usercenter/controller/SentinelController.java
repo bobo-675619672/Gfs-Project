@@ -2,6 +2,7 @@ package com.dw.gfs.usercenter.controller;
 
 import com.dw.gfs.common.base.BaseController;
 import com.dw.gfs.common.entity.ResultData;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  * sentinel
  * @author liaodewen
  */
+@Api(tags = "sentinel测试管理")
 @RestController
 @RequestMapping("/s")
 public class SentinelController extends BaseController {
