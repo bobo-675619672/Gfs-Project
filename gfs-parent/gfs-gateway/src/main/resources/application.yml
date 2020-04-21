@@ -5,9 +5,11 @@ spring:
   application:
     name: gateway
   cloud:
-    nacos:
-      discovery:
-        server-addr: 192.168.8.100
+    #    nacos:
+    #      discovery:
+    #        server-addr: 192.168.8.100
+    #      config:
+    #        server-addr: 192.168.8.100
     # 路由网关配置
     gateway:
       locator:
@@ -19,14 +21,12 @@ spring:
             - Path=/usercenter/**
           filters:
             - SwaggerHeaderFilter
-#            - StripPrefix=1
         - id: taskcenter
           uri: lb://taskcenter
           predicates:
             - Path=/taskcenter/**
           filters:
             - SwaggerHeaderFilter
-#            - StripPrefix=1
       x-forwarded:
         enabled: false
       discovery:
