@@ -2,10 +2,12 @@ package com.dw.gfs.usercenter.controller;
 
 import com.dw.gfs.common.base.BaseController;
 import com.dw.gfs.common.entity.ResultData;
+import com.dw.gfs.usercenter.entity.UserData;
 import com.dw.gfs.usercenter.entity.dto.ContentDto;
 import com.dw.gfs.usercenter.entity.dto.TaskDto;
 import com.dw.gfs.usercenter.entity.dto.UserDto;
 import com.dw.gfs.usercenter.entity.vo.TaskQueryReqVo;
+import com.dw.gfs.usercenter.service.UserDataService;
 import com.dw.gfs.usercenter.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,6 +25,8 @@ public class UserController extends BaseController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserDataService userDataService;
 
     @ApiOperation("用户信息")
     @GetMapping("/info/{userId}")
@@ -47,6 +51,12 @@ public class UserController extends BaseController {
     @PostMapping("/task/list")
     public ResultData<List<TaskDto>> taskList(@RequestBody TaskQueryReqVo reqVo) {
         return success(userService.taskList(reqVo));
+    }
+
+    @ApiOperation(value = "查询用户", notes = "根据账号查询用户")
+    @GetMapping("/account/{account}")
+    public ResultData<UserData> account(@PathVariable("account") String account) {
+        return success(userDataService.selectByAccount(account));
     }
 
 }
